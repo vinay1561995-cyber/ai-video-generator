@@ -1,0 +1,22 @@
+Package: ai-video-generator
+Version: 1.0.0
+Architecture: all
+Maintainer: vinay1561995-cyber <vinay1561995@gmail.com>
+Homepage: https://github.com/vinay1561995-cyber/ai-video-generator
+Description: AI-powered video generation application that creates videos from text prompts
+ AI Video Generator is a modern web application that transforms text descriptions
+ into stunning videos using cutting-edge artificial intelligence technology.
+ .
+ Features:
+  - Generate videos from detailed text prompts
+  - Multiple video styles (Cinematic, Animated, Realistic, etc.)
+  - Customizable duration (5-60 seconds)
+  - High-quality output up to 4K resolution
+  - Local storage persistence for video history
+  - Real-time progress tracking
+  - No installation required - works in any browser
+  - Responsive design for all devices
+Section: web
+Priority: optional
+Depends: 
+Suggests: firefox | chromium-browser | google-chrome-browser
