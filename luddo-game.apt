@@ -1,0 +1,25 @@
+Package: luddo-game
+Version: 1.0.0
+Architecture: all
+Maintainer: Luddo Game Developer <developer@luddo-game.com>
+Homepage: https://luddo-game.com
+Description: Luddo Game - A classic multiplayer board game application
+ Luddo Game is an interactive digital implementation of the traditional
+ Luddo board game. Play with friends and family online or locally.
+ 
+Features:
+ - Single player and multiplayer modes
+ - Real-time online gameplay
+ - Offline play capability
+ - Customizable game rules
+ - Chat and social features
+ - Cross-platform support
+ - Smooth animations and graphics
+ - User-friendly interface
+
+Depends: nodejs (>= 14.0), npm (>= 6.0)
+Recommends: libgl1-mesa-glx
+Suggests: luddo-game-themes
+
+Priority: optional
+Section: games
