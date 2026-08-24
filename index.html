@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator - Create Videos with AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .pulse-ring { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); } 50% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); } }
+        .video-preview { aspect-ratio: 16/9; background: #1a1a1a; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+    <!-- Navigation Bar -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-film text-3xl"></i>
+                <h1 class="text-2xl font-bold">AI Video Generator</h1>
+            </div>
+            <div class="flex gap-4">
+                <button class="px-4 py-2 bg-white text-purple-600 rounded-lg font-semibold hover:bg-gray-100 transition">Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-4">Create Videos with AI Magic</h2>
+            <p class="text-xl text-gray-100 mb-8">Transform your ideas into stunning videos in seconds using advanced AI technology</p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="scrollToGenerator()" class="px-8 py-3 bg-white text-purple-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition">Get Started</button>
+                <button class="px-8 py-3 bg-purple-700 text-white rounded-lg font-bold text-lg hover:bg-purple-800 transition border border-white">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 px-4 bg-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-4xl font-bold text-center mb-12">Powerful Features</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                    <i class="fas fa-magic text-4xl text-purple-400 mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">AI-Powered Generation</h4>
+                    <p class="text-gray-300">Advanced AI models generate videos from text descriptions with stunning visual quality</p>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                    <i class="fas fa-palette text-4xl text-blue-400 mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Customization Options</h4>
+                    <p class="text-gray-300">Fine-tune videos with style, duration, resolution, and special effects</p>
+                </div>
+                <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition">
+                    <i class="fas fa-download text-4xl text-green-400 mb-4"></i>
+                    <h4 class="text-xl font-bold mb-2">Easy Download</h4>
+                    <p class="text-gray-300">Export videos in multiple formats and resolutions for any platform</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Generator Section -->
+    <section id="generator" class="py-16 px-4 bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <h3 class="text-4xl font-bold text-center mb-12">Create Your Video</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Input Panel -->
+                <div class="bg-gray-800 p-8 rounded-lg">
+                    <h4 class="text-2xl font-bold mb-6">Video Details</h4>
+                    
+                    <form id="videoForm" class="space-y-6">
+                        <!-- Video Prompt -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Describe Your Video <span class="text-red-400">*</span></label>
+                            <textarea id="videoPrompt" placeholder="e.g., A futuristic city with flying cars, neon lights, and bustling streets" 
+                                class="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none h-24 resize-none"
+                                required></textarea>
+                            <p class="text-xs text-gray-400 mt-1">Be descriptive for better results</p>
+                        </div>
+
+                        <!-- Video Duration -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Duration (seconds)</label>
+                            <select id="duration" class="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none">
+                                <option value="5">5 seconds</option>
+                                <option value="10" selected>10 seconds</option>
+                                <option value="15">15 seconds</option>
+                                <option value="30">30 seconds</option>
+                                <option value="60">60 seconds</option>
+                            </select>
+                        </div>
+
+                        <!-- Video Style -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Video Style</label>
+                            <select id="style" class="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none">
+                                <option value="realistic">Realistic</option>
+                                <option value="cinematic" selected>Cinematic</option>
+                                <option value="animated">Animated</option>
+                                <option value="cartoon">Cartoon</option>
+                                <option value="stylized">Stylized</option>
+                                <option value="documentary">Documentary</option>
+                            </select>
+                        </div>
+
+                        <!-- Resolution -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Resolution</label>
+                            <select id="resolution" class="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none">
+                                <option value="720p">720p (HD)</option>
+                                <option value="1080p" selected>1080p (Full HD)</option>
+                                <option value="1440p">1440p (2K)</option>
+                                <option value="2160p">2160p (4K)</option>
+                            </select>
+                        </div>
+
+                        <!-- Aspect Ratio -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Aspect Ratio</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2 cursor-pointer p-2 bg-gray-700 rounded hover:bg-gray-600">
+                                    <input type="radio" name="aspect" value="16:9" checked class="accent-purple-500">
+                                    <span>16:9</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer p-2 bg-gray-700 rounded hover:bg-gray-600">
+                                    <input type="radio" name="aspect" value="9:16" class="accent-purple-500">
+                                    <span>9:16 (Vertical)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer p-2 bg-gray-700 rounded hover:bg-gray-600">
+                                    <input type="radio" name="aspect" value="1:1" class="accent-purple-500">
+                                    <span>1:1 (Square)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer p-2 bg-gray-700 rounded hover:bg-gray-600">
+                                    <input type="radio" name="aspect" value="4:3" class="accent-purple-500">
+                                    <span>4:3</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Music -->
+                        <div>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="addMusic" checked class="w-5 h-5 accent-purple-500 rounded">
+                                <span class="font-semibold">Add Background Music</span>
+                            </label>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <i class="fas fa-sparkles"></i> Generate Video
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Preview Panel -->
+                <div class="space-y-6">
+                    <!-- Video Preview -->
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4">Preview</h4>
+                        <div class="video-preview rounded-lg flex items-center justify-center border-2 border-gray-700">
+                            <div class="text-center">
+                                <i class="fas fa-film text-6xl text-gray-600 mb-4"></i>
+                                <p id="previewText" class="text-gray-400">Your video preview will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generation Status -->
+                    <div id="statusPanel" class="bg-gray-800 p-6 rounded-lg hidden">
+                        <h4 class="text-xl font-bold mb-4">Generation Status</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Processing</span>
+                                    <span id="progress">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div id="progressBar" class="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <p id="statusMessage" class="text-sm text-gray-400">Initializing...</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent Videos -->
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4">Recent Generations</h4>
+                        <div id="recentVideos" class="space-y-3">
+                            <p class="text-gray-400 text-sm">No videos generated yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-16 px-4 bg-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-4xl font-bold text-center mb-12">Simple Pricing</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-purple-500 transition">
+                    <h4 class="text-2xl font-bold mb-4">Free</h4>
+                    <p class="text-3xl font-bold text-purple-400 mb-6">$0<span class="text-lg text-gray-300">/month</span></p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> 3 videos/month</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> 720p resolution</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-times text-red-400"></i> Watermark included</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-times text-red-400"></i> Priority support</li>
+                    </ul>
+                    <button class="w-full px-6 py-2 bg-gray-600 rounded-lg font-semibold hover:bg-gray-500 transition">Get Started</button>
+                </div>
+                <div class="bg-gray-700 p-8 rounded-lg border-2 border-purple-500 hover:border-purple-400 transition transform scale-105">
+                    <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-bold">Popular</span>
+                    <h4 class="text-2xl font-bold mb-4 mt-4">Pro</h4>
+                    <p class="text-3xl font-bold text-purple-400 mb-6">$29<span class="text-lg text-gray-300">/month</span></p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> Unlimited videos</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> 4K resolution</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> No watermark</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> Priority support</li>
+                    </ul>
+                    <button class="w-full px-6 py-2 bg-purple-600 rounded-lg font-semibold hover:bg-purple-700 transition">Subscribe Now</button>
+                </div>
+                <div class="bg-gray-700 p-8 rounded-lg border border-gray-600 hover:border-purple-500 transition">
+                    <h4 class="text-2xl font-bold mb-4">Enterprise</h4>
+                    <p class="text-3xl font-bold text-purple-400 mb-6">Custom</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> Everything in Pro</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> API access</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> Dedicated support</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-green-400"></i> Custom features</li>
+                    </ul>
+                    <button class="w-full px-6 py-2 bg-gray-600 rounded-lg font-semibold hover:bg-gray-500 transition">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h5 class="font-bold mb-4">Product</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Company</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">About</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Legal</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Follow Us</h5>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 AI Video Generator. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Local Storage Management
+        const videoStorage = {
+            getVideos: () => JSON.parse(localStorage.getItem('generatedVideos') || '[]'),
+            saveVideo: (video) => {
+                const videos = videoStorage.getVideos();
+                videos.unshift(video);
+                if (videos.length > 10) videos.pop();
+                localStorage.setItem('generatedVideos', JSON.stringify(videos));
+            },
+            clearAll: () => localStorage.removeItem('generatedVideos')
+        };
+
+        // Form Submission
+        document.getElementById('videoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const videoData = {
+                prompt: document.getElementById('videoPrompt').value,
+                duration: document.getElementById('duration').value,
+                style: document.getElementById('style').value,
+                resolution: document.getElementById('resolution').value,
+                aspect: document.querySelector('input[name="aspect"]:checked').value,
+                music: document.getElementById('addMusic').checked,
+                id: Date.now(),
+                timestamp: new Date().toLocaleString()
+            };
+
+            // Show status panel
+            document.getElementById('statusPanel').classList.remove('hidden');
+            document.getElementById('previewText').textContent = videoData.prompt;
+
+            // Simulate video generation
+            for (let i = 0; i <= 100; i += 10) {
+                await new Promise(r => setTimeout(r, 300));
+                document.getElementById('progress').textContent = i + '%';
+                document.getElementById('progressBar').style.width = i + '%';
+                
+                const messages = [
+                    'Initializing AI model...',
+                    'Analyzing your description...',
+                    'Generating scenes...',
+                    'Processing frames...',
+                    'Adding effects...',
+                    'Synchronizing audio...',
+                    'Rendering video...',
+                    'Finalizing...',
+                    'Optimizing...',
+                    'Complete!'
+                ];
+                document.getElementById('statusMessage').textContent = messages[Math.floor(i / 10)] || 'Processing...';
+            }
+
+            // Save to localStorage
+            videoStorage.saveVideo(videoData);
+            updateRecentVideos();
+
+            // Reset form
+            document.getElementById('videoForm').reset();
+            document.getElementById('statusPanel').classList.add('hidden');
+            
+            showNotification('Video generated successfully!');
+        });
+
+        // Update Recent Videos
+        function updateRecentVideos() {
+            const videos = videoStorage.getVideos();
+            const container = document.getElementById('recentVideos');
+            
+            if (videos.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-sm">No videos generated yet</p>';
+                return;
+            }
+
+            container.innerHTML = videos.map(video => `
+                <div class="bg-gray-700 p-4 rounded-lg">
+                    <p class="text-sm font-semibold text-purple-400 truncate">${video.prompt}</p>
+                    <p class="text-xs text-gray-400 mt-1">${video.timestamp}</p>
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="downloadVideo(${video.id})" class="text-xs bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded transition">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button onclick="deleteVideo(${video.id})" class="text-xs bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delete Video
+        function deleteVideo(id) {
+            let videos = videoStorage.getVideos();
+            videos = videos.filter(v => v.id !== id);
+            localStorage.setItem('generatedVideos', JSON.stringify(videos));
+            updateRecentVideos();
+            showNotification('Video deleted!');
+        }
+
+        // Download Video
+        function downloadVideo(id) {
+            const videos = videoStorage.getVideos();
+            const video = videos.find(v => v.id === id);
+            if (video) {
+                showNotification(`Downloading: ${video.prompt.substring(0, 30)}...`);
+            }
+        }
+
+        // Notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg fade-in';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Scroll to Generator
+        function scrollToGenerator() {
+            document.getElementById('generator').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateRecentVideos();
+    </script>
+
+</body>
+</html>
